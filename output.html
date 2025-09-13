@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpringWeb - Underwater Frutiger Aero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #a1c4fd 0%, #c2e9fb 30%, #a1c4fd 70%, #c2e9fb 100%);
+            font-family: 'Bubblegum Sans', cursive;
+            overflow-x: hidden;
+            position: relative;
+            color: white;
+        }
+
+        /* Underwater background with moving elements */
+        .underwater-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Bubbles */
+        .bubble {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 70%, transparent 70%);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: bubble-rise linear infinite;
+        }
+
+        @keyframes bubble-rise {
+            to {
+                transform: translateY(-100vh) translateX(20px);
+            }
+        }
+
+        /* Seaweed */
+        .seaweed {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 150px;
+            background: linear-gradient(to right, #87CEFA, #ADD8E6, #87CEFA);
+            border-radius: 10px;
+            animation: seaweed-sway 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes seaweed-sway {
+            from {
+                transform: rotate(-10deg);
+            }
+            to {
+                transform: rotate(10deg);
+            }
+        }
+
+        /* Fish */
+        .fish {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            border-radius: 10% 50% 50% 10%;
+            animation: fish-swim 15s linear infinite;
+        }
+
+        .fish::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 5px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 10px solid;
+        }
+
+        .fish::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            width: 5px;
+            height: 5px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .fish-1 {
+            background: linear-gradient(90deg, #FFB6C1, #FFC0CB, #FFB6C1);
+        }
+        .fish-1::before {
+            border-right-color: #FFC0CB;
+        }
+
+        .fish-2 {
+            background: linear-gradient(90deg, #98FB98, #90EE90, #98FB98);
+            width: 35px;
+            height: 18px;
+        }
+        .fish-2::before {
+            border-right-color: #90EE90;
+        }
+
+        .fish-3 {
+            background: linear-gradient(90deg, #FFA07A, #FF7F50, #FFA07A);
+            width: 45px;
+            height: 22px;
+        }
+        .fish-3::before {
+            border-right-color: #FF7F50;
+        }
+
+        @keyframes fish-swim {
+            0% {
+                transform: translateX(100vw) translateY(0);
+            }
+            25% {
+                transform: translateX(75vw) translateY(50px);
+            }
+            50% {
+                transform: translateX(50vw) translateY(-30px);
+            }
+            75% {
+                transform: translateX(25vw) translateY(20px);
+            }
+            100% {
+                transform: translateX(-100px) translateY(0);
+            }
+        }
+
+        /* Search section */
+        .search-section {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(135, 206, 250, 0.7);
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            border: 3px solid rgba(135, 206, 250, 0.8);
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Comfortaa', cursive;
+            box-shadow: 
+                0 5px 15px rgba(135, 206, 250, 0.4),
+                inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            outline: none;
+            color: #191970;
+        }
+
+        .search-input::placeholder {
+            color: #4682B4;
+        }
+
+        .search-input:focus {
+            border-color: #87CEFA;
+            box-shadow: 
+                0 8px 25px rgba(135, 206, 250, 0.6),
+                inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 100;
+        }
+
+        .search-result {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(135, 206, 250, 0.3);
+            color: #191970;
+            font-family: 'Comfortaa', cursive;
+            font-weight: 700;
+        }
+
+        .search-result:hover {
+            background: rgba(135, 206, 250, 0.2);
+        }
+
+        .search-result:last-child {
+            border-bottom: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 20px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bubble-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bubble-title {
+            font-size: 5rem;
+            font-weight: 400;
+            color: #1E90FF;
+            text-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.3),
+                0 0 25px rgba(135, 206, 250, 0.9);
+            padding: 3rem 5rem;
+            background: linear-gradient(145deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(245, 245, 255, 0.85) 50%, 
+                rgba(255, 255, 255, 0.95) 100%);
+            border-radius: 70px;
+            backdrop-filter: blur(20px);
+            border: 4px solid rgba(135, 206, 250, 0.8);
+            box-shadow: 
+                0 20px 40px rgba(135, 206, 250, 0.5),
+                0 8px 20px rgba(0, 0, 0, 0.15),
+                inset 0 8px 20px rgba(255, 255, 255, 0.7),
+                inset 0 -8px 20px rgba(135, 206, 250, 0.5);
+            animation: float-title 5s ease-in-out infinite;
+            letter-spacing: 3px;
+            font-family: 'Bubblegum Sans', cursive;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble-title::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 30%;
+            height: 30%;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(15px);
+        }
+
+        .bubble-title::after {
+            content: '';
+            position: absolute;
+            top: 60%;
+            right: 25%;
+            width: 20%;
+            height: 20%;
+            background: rgba(135, 206, 250, 0.4);
+            border-radius: 50%;
+            filter: blur(10px);
+        }
+
+        @keyframes float-title {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                text-shadow: 
+                    0 3px 6px rgba(0, 0, 0, 0.3),
+                    0 0 25px rgba(135, 206, 250, 0.9);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.03);
+                text-shadow: 
+                    0 8px 20px rgba(0, 0, 0, 0.4),
+                    0 0 40px rgba(135, 206, 250, 1.2);
+            }
+        }
+
+        .title-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(145deg, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                rgba(245, 245, 255, 0.6) 50%, 
+                rgba(255, 255, 255, 0.8) 100%);
+            border: 3px solid rgba(135, 206, 250, 0.6);
+            animation: bubble-float 6s ease-in-out infinite;
+            backdrop-filter: blur(12px);
+            box-shadow: 
+                inset 0 8px 20px rgba(255, 255, 255, 0.9),
+                0 4px 15px rgba(135, 206, 250, 0.4);
+        }
+
+        @keyframes bubble-float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(20px, -20px) scale(1.15);
+            }
+        }
+
+        .title-bubble-1 {
+            width: 120px;
+            height: 120px;
+            top: -60px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .title-bubble-2 {
+            width: 80px;
+            height: 80px;
+            bottom: -50px;
+            right: -80px;
+            animation-delay: 2s;
+        }
+
+        .title-bubble-3 {
+            width: 60px;
+            height: 60px;
+            top: 50px;
+            right: -110px;
+            animation-delay: 4s;
+        }
+
+        .title-bubble-4 {
+            width: 70px;
+            height: 70px;
+            bottom: 60px;
+            left: -120px;
+            animation-delay: 1s;
+        }
+
+        /* Additional Frutiger Aero elements */
+        .highlight {
+            position: absolute;
+            width: 65%;
+            height: 40px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.9) 50%, 
+                transparent 100%);
+            top: 15%;
+            left: 17.5%;
+            border-radius: 50%;
+            filter: blur(12px);
+            animation: highlight-move 4s ease-in-out infinite;
+        }
+
+        @keyframes highlight-move {
+            0%, 100% {
+                transform: translateX(-15px);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateX(15px);
+                opacity: 1;
+            }
+        }
+
+        /* Buttons container */
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 15px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            z-index: 10;
+            position: relative;
+        }
+
+        .aero-button {
+            font-family: 'Comfortaa', cursive;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #191970;
+            background: linear-gradient(145deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(245, 245, 255, 0.85) 50%, 
+                rgba(255, 255, 255, 0.95) 100%);
+            border: 2px solid rgba(135, 206, 250, 0.8);
+            border-radius: 20px;
+            padding: 12px 15px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 
+                0 6px 15px rgba(135, 206, 250, 0.3),
+                0 2px 8px rgba(0, 0, 0, 0.12),
+                inset 0 2px 8px rgba(255, 255, 255, 0.6),
+                inset 0 -2px 8px rgba(135, 206, 250, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aero-button::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 20%;
+            height: 20%;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            filter: blur(8px);
+        }
+
+        .aero-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 25px rgba(135, 206, 250, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.25),
+                inset 0 5px 15px rgba(255, 255, 255, 0.8),
+                inset 0 -5px 15px rgba(135, 206, 250, 0.5);
+            text-shadow: 0 0 15px rgba(135, 206, 250, 0.9);
+        }
+
+        .aero-button:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 
+                0 3px 10px rgba(135, 206, 250, 0.3),
+                0 1px 5px rgba(0, 0, 0, 0.1),
+                inset 0 2px 5px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 5px rgba(135, 206, 250, 0.2);
+        }
+
+        /* Upload section */
+        .upload-section {
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid rgba(135, 206, 250, 0.7);
+            position: relative;
+            z-index: 10;
+            margin-top: 30px;
+        }
+
+        .upload-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(135, 206, 250, 0.4),
+                inset 0 5px 15px rgba(255, 255, 255, 0.5);
+            border: 3px solid rgba(135, 206, 250, 0.8);
+        }
+
+        .upload-title {
+            color: #191970;
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .file-input {
+            padding: 15px;
+            border: 2px dashed rgba(135, 206, 250, 0.8);
+            border-radius: 15px;
+            background: rgba(245, 245, 255, 0.5);
+            font-family: 'Comfortaa', cursive;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #191970;
+        }
+
+        .file-input:hover {
+            border-color: #87CEFA;
+            background: rgba(245, 245, 255, 0.8);
+        }
+
+        .upload-button {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(145deg, #87CEFA, #4682B4);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            cursor: pointer;
+            box-shadow: 
+                0 8px 20px rgba(135, 206, 250, 0.5),
+                0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .upload-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 25px rgba(135, 206, 250, 0.7),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 5px 15px rgba(135, 206, 250, 0.5),
+                0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Clock section */
+        .clock-section {
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid rgba(135, 206, 250, 0.7);
+            position: relative;
+            z-index: 10;
+        }
+
+        .clock-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(135, 206, 250, 0.4),
+                inset 0 5px 15px rgba(255, 255, 255, 0.5);
+            border: 3px solid rgba(135, 206, 250, 0.8);
+        }
+
+        .clock-title {
+            color: #191970;
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .clock {
+            font-family: 'Comfortaa', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #191970;
+            text-shadow: 0 2px 4px rgba(135, 206, 250, 0.5);
+            background: linear-gradient(145deg, #f5f5ff, #e6e6fa);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(135, 206, 250, 0.6);
+            box-shadow: 
+                0 8px 20px rgba(135, 206, 250, 0.3),
+                inset 0 3px 10px rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 1400px) {
+            .buttons-container {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .buttons-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+            
+            .bubble-title {
+                font-size: 4rem;
+                padding: 2.5rem 4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .buttons-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bubble-title {
+                font-size: 3rem;
+                padding: 2rem 2.5rem;
+            }
+            
+            .title-bubble-1 {
+                width: 90px;
+                height: 90px;
+                top: -45px;
+                left: -70px;
+            }
+            
+            .title-bubble-2 {
+                width: 60px;
+                height: 60px;
+                bottom: -35px;
+                right: -50px;
+            }
+            
+            .title-bubble-3 {
+                width: 45px;
+                height: 45px;
+                top: 40px;
+                right: -80px;
+            }
+            
+            .title-bubble-4 {
+                width: 55px;
+                height: 55px;
+                bottom: 45px;
+                left: -90px;
+            }
+            
+            .highlight {
+                width: 75%;
+                height: 25px;
+                top: 20%;
+                left: 12.5%;
+            }
+            
+            .buttons-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+                padding: 25px 15px;
+            }
+            
+            .aero-button {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+            }
+            
+            .clock {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .buttons-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .bubble-title {
+                font-size: 2.5rem;
+                padding: 1.5rem 2rem;
+            }
+            
+            .search-input {
+                font-size: 1rem;
+                padding: 12px 15px;
+            }
+            
+            .clock {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .buttons-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Underwater background -->
+    <div class="underwater-bg" id="underwater-bg"></div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search for games...">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="bubble-container">
+            <div class="title-bubble title-bubble-1"></div>
+            <div class="title-bubble title-bubble-2"></div>
+            <div class="title-bubble title-bubble-3"></div>
+            <div class="title-bubble title-bubble-4"></div>
+            <div class="highlight"></div>
+            <h1 class="bubble-title">SpringWeb</h1>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <a href="snake.html" class="aero-button">Snake</a>
+        <a href="tetris.html" class="aero-button">Tetris</a>
+        <a href="pacman.html" class="aero-button">Pac-Man</a>
+        <a href="pong.html" class="aero-button">Pong</a>
+        <a href="space-invaders.html" class="aero-button">Space Invaders</a>
+        <a href="frogger.html" class="aero-button">Frogger</a>
+        <a href="breakout.html" class="aero-button">Breakout</a>
+        <a href="minesweeper.html" class="aero-button">Minesweeper</a>
+        <a href="solitaire.html" class="aero-button">Solitaire</a>
+        <a href="chess.html" class="aero-button">Chess</a>
+        <a href="checkers.html" class="aero-button">Checkers</a>
+        <a href="memory.html" class="aero-button">Memory</a>
+        <a href="hangman.html" class="aero-button">Hangman</a>
+        <a href="quiz.html" class="aero-button">Quiz</a>
+        <a href="racing.html" class="aero-button">Racing</a>
+        <a href="platformer.html" class="aero-button">Platformer</a>
+        <a href="arkanoid.html" class="aero-button">Arkanoid</a>
+        <a href="battleship.html" class="aero-button">Battleship</a>
+        <a href="sudoku.html" class="aero-button">Sudoku</a>
+        <a href="crossword.html" class="aero-button">Crossword</a>
+        <a href="trivia.html" class="aero-button">Trivia</a>
+        <a href="word-search.html" class="aero-button">Word Search</a>
+        <a href="mahjong.html" class="aero-button">Mahjong</a>
+        <a href="bejeweled.html" class="aero-button">Bejeweled</a>
+        <a href="tetris-attack.html" class="aero-button">Tetris Attack</a>
+        <a href="kirby.html" class="aero-button">Kirby's Adventure</a>
+        <a href="mario.html" class="aero-button">Super Mario</a>
+        <a href="zelda.html" class="aero-button">Zelda</a>
+        <a href="sonic.html" class="aero-button">Sonic</a>
+        <a href="pokemon.html" class="aero-button">Pokemon</a>
+        <a href="street-fighter.html" class="aero-button">Street Fighter</a>
+        <a href="mortal-kombat.html" class="aero-button">Mortal Kombat</a>
+        <a href="pacman-battle.html" class="aero-button">Pac-Man Battle</a>
+        <a href="frogger-2.html" class="aero-button">Frogger 2</a>
+        <a href="arkanoid-2.html" class="aero-button">Arkanoid 2</a>
+        <a href="tetris-2.html" class="aero-button">Tetris 2</a>
+        <a href="snake-2.html" class="aero-button">Snake 2</a>
+        <a href="pong-2.html" class="aero-button">Pong 2</a>
+        <a href="space-invaders-2.html" class="aero-button">Space Invaders 2</a>
+        <a href="breakout-2.html" class="aero-button">Breakout 2</a>
+        <a href="minesweeper-2.html" class="aero-button">Minesweeper 2</a>
+        <a href="solitaire-2.html" class="aero-button">Solitaire 2</a>
+        <a href="chess-2.html" class="aero-button">Chess 2</a>
+        <a href="checkers-2.html" class="aero-button">Checkers 2</a>
+        <a href="memory-2.html" class="aero-button">Memory 2</a>
+        <a href="hangman-2.html" class="aero-button">Hangman 2</a>
+        <a href="quiz-2.html" class="aero-button">Quiz 2</a>
+        <a href="racing-2.html" class="aero-button">Racing 2</a>
+        <a href="platformer-2.html" class="aero-button">Platformer 2</a>
+        <a href="battleship-2.html" class="aero-button">Battleship 2</a>
+        <a href="sudoku-2.html" class="aero-button">Sudoku 2</a>
+        <a href="crossword-2.html" class="aero-button">Crossword 2</a>
+        <a href="trivia-2.html" class="aero-button">Trivia 2</a>
+        <a href="word-search-2.html" class="aero-button">Word Search 2</a>
+        <a href="mahjong-2.html" class="aero-button">Mahjong 2</a>
+        <a href="bejeweled-2.html" class="aero-button">Bejeweled 2</a>
+        <a href="tetris-attack-2.html" class="aero-button">Tetris Attack 2</a>
+        <a href="kirby-2.html" class="aero-button">Kirby 2</a>
+        <a href="mario-2.html" class="aero-button">Super Mario 2</a>
+        <a href="zelda-2.html" class="aero-button">Zelda 2</a>
+        <a href="sonic-2.html" class="aero-button">Sonic 2</a>
+        <a href="pokemon-2.html" class="aero-button">Pokemon 2</a>
+        <a href="street-fighter-2.html" class="aero-button">Street Fighter 2</a>
+        <a href="mortal-kombat-2.html" class="aero-button">Mortal Kombat 2</a>
+        <a href="pacman-battle-2.html" class="aero-button">Pac-Man Battle 2</a>
+        <a href="frogger-3.html" class="aero-button">Frogger 3</a>
+        <a href="arkanoid-3.html" class="aero-button">Arkanoid 3</a>
+        <a href="tetris-3.html" class="aero-button">Tetris 3</a>
+        <a href="snake-3.html" class="aero-button">Snake 3</a>
+        <a href="pong-3.html" class="aero-button">Pong 3</a>
+        <a href="space-invaders-3.html" class="aero-button">Space Invaders 3</a>
+        <a href="breakout-3.html" class="aero-button">Breakout 3</a>
+        <a href="minesweeper-3.html" class="aero-button">Minesweeper 3</a>
+        <a href="solitaire-3.html" class="aero-button">Solitaire 3</a>
+        <a href="chess-3.html" class="aero-button">Chess 3</a>
+        <a href="checkers-3.html" class="aero-button">Checkers 3</a>
+        <a href="memory-3.html" class="aero-button">Memory 3</a>
+        <a href="hangman-3.html" class="aero-button">Hangman 3</a>
+        <a href="quiz-3.html" class="aero-button">Quiz 3</a>
+        <a href="racing-3.html" class="aero-button">Racing 3</a>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <div class="upload-container">
+            <h2 class="upload-title">Upload Your Game</h2>
+            <form class="upload-form" id="uploadForm">
+                <input type="file" class="file-input" id="gameFile" accept=".html,.htm" required>
+                <button type="submit" class="upload-button">Upload Game</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Clock Section -->
+    <div class="clock-section">
+        <div class="clock-container">
+            <h2 class="clock-title">Current Time</h2>
+            <div class="clock" id="clock">00:00:00 AM</div>
+        </div>
+    </div>
+
+    <script>
+        // Create dynamic underwater elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const bg = document.getElementById('underwater-bg');
+            const gameButtons = document.querySelectorAll('.aero-button');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const uploadForm = document.getElementById('uploadForm');
+            const clockElement = document.getElementById('clock');
+            
+            // Create bubbles
+            for (let i = 0; i < 40; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 40 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.animationDuration = `${Math.random() * 12 + 8}s`;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                bg.appendChild(bubble);
+            }
+            
+            // Create seaweed
+            for (let i = 0; i < 20; i++) {
+                const seaweed = document.createElement('div');
+                seaweed.className = 'seaweed';
+                seaweed.style.left = `${Math.random() * 100}%`;
+                seaweed.style.height = `${Math.random() * 120 + 100}px`;
+                seaweed.style.animationDelay = `${Math.random() * 3}s`;
+                seaweed.style.animationDuration = `${Math.random() * 4 + 3}s`;
+                bg.appendChild(seaweed);
+            }
+            
+            // Create fish (swimming right to left)
+            for (let i = 0; i < 15; i++) {
+                const fish = document.createElement('div');
+                fish.className = `fish fish-${Math.floor(Math.random() * 3) + 1}`;
+                fish.style.top = `${Math.random() * 80 + 10}%`;
+                fish.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                fish.style.animationDelay = `${Math.random() * 5}s`;
+                fish.style.width = `${Math.random() * 30 + 30}px`;
+                fish.style.height = `${Math.random() * 15 + 10}px`;
+                bg.appendChild(fish);
+            }
+            
+            // Search functionality
+            const gameNames = Array.from(gameButtons).map(button => button.textContent);
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                if (searchTerm.length === 0) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                const filteredGames = gameNames.filter(name => 
+                    name.toLowerCase().includes(searchTerm)
+                );
+                
+                if (filteredGames.length > 0) {
+                    searchResults.innerHTML = '';
+                    filteredGames.forEach(game => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'search-result';
+                        resultItem.textContent = game;
+                        resultItem.addEventListener('click', function() {
+                            const targetButton = Array.from(gameButtons).find(button => 
+                                button.textContent === game
+                            );
+                            if (targetButton) {
+                                targetButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                targetButton.style.transform = 'scale(1.2)';
+                                setTimeout(() => {
+                                    targetButton.style.transform = '';
+                                }, 1000);
+                            }
+                            searchInput.value = '';
+                            searchResults.style.display = 'none';
+                        });
+                        searchResults.appendChild(resultItem);
+                    });
+                    searchResults.style.display = 'block';
+                } else {
+                    searchResults.innerHTML = '<div class="search-result">No games found</div>';
+                    searchResults.style.display = 'block';
+                }
+            });
+            
+            // Close search results when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            // Upload functionality (simulated)
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const fileInput = document.getElementById('gameFile');
+                if (fileInput.files.length > 0) {
+                    alert(`Game "${fileInput.files[0].name}" uploaded successfully! In a real implementation, this would be added to the game list.`);
+                    fileInput.value = '';
+                }
+            });
+            
+            // Clock functionality
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                hours = hours.toString().padStart(2, '0');
+                
+                clockElement.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+            }
+            
+            // Update clock every second
+            setInterval(updateClock, 1000);
+            updateClock(); // Initial call
+        });
+    </script>
+</body>
+</html>
