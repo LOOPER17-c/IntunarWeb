@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpringWeb</title>
+    <link rel="shortcut icon" href="springweb.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(180deg, #006994, #5ce4a4, #00a8cc, #07e7c5);
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ocean-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(7, 242, 85, 0.25) 0px, transparent 50px),
+                radial-gradient(circle at 80% 70%, rgba(88, 156, 205, 0.435) 0px, transparent 50px),
+                radial-gradient(circle at 40% 80%, rgb(126, 159, 192) 0px, transparent 51px);
+            z-index: 1;
+        }
+
+        .fish {
+            position: absolute;
+            font-size: 40px;
+            z-index: 3;
+            animation: swim 6s linear infinite;
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-100px) rotate(1deg); }
+            100% { transform: translateX(calc(100vw + 100px)) rotate(1deg); }
+        }
+
+        .glass-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .glass-circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(0, 100, 200, 0.2);
+        }
+
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px; 
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(19px);
+            box-shadow: 0 5px 26px rgba(0, 50, 100, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .search-container {
+            flex: 2;
+            max-width: 600px; 
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 14px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 
+                0 5px 20px rgba(0, 50, 100, 0.2),
+                inset 0 2px 10px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-bar:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 30px rgba(0, 50, 100, 0.3),
+                inset 0 2px 15px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            padding-top: 90px;
+        }
+
+        .spring-web-title {
+            font-size: 85px;
+            font-weight: 767;
+            color: rgb(244, 236, 236);
+            text-shadow: 0 0 30px rgba(4, 74, 154, 0.967);
+            margin-bottom: 39px;
+            text-align: center;
+            z-index: 20;
+            letter-spacing: -2px;
+            font-family: 'Bubblegum Sans', cursive;
+            animation: float 2s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 30px rgba(0, 50, 100, 0.3),
+                inset 0 5px 15px rgba(255, 255, 255, 0.2),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(40px); }
+            50% { transform: translateY(-11px); }
+        }
+
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 15px;
+            max-width: 1400px;
+            padding: 30px;
+            z-index: 20;
+            overflow-y: auto;
+            max-height: calc(100vh - 220px);
+        }
+
+        .aero-button {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 667;
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            box-shadow: 
+                0 6px 25px rgba(0, 50, 100, 0.2),
+                inset 0 2px 10px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            font-size: 14px;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .aero-button:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 102, 0.15), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .aero-button:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 
+                0 10px 35px rgba(0, 50, 100, 0.3),
+                inset 0 2px 15px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 15px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .aero-button:hover:before {
+            transform: rotate(45deg) translate(20%, 20%);
+        }
+
+        /* Scrollbar styling */
+        .buttons-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .buttons-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .buttons-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 5px;
+        }
+
+        .buttons-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        @media (max-width: 1400px) {
+            .buttons-container {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .buttons-container {
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .spring-web-title {
+                font-size: 70px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .buttons-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .buttons-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .spring-web-title {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .buttons-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .spring-web-title {
+                font-size: 50px;
+                padding: 15px 30px;
+            }
+            
+            .search-bar {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .buttons-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .header-bar {
+                padding: 0 15px;
+            }
+            
+            .spring-web-title {
+                font-size: 40px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ocean-background"></div>
+    <div class="glass-circles" id="glassCircles"></div>
+    <div class="header-bar">
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search for games...">
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="spring-web-title">SpringWeb</div>
+        <div class="buttons-container" id="buttonsContainer">
+            <a href="html files/BLOCKS/BLOCKS.html" class="aero-button">Minecraft Simple</a>
+            <a href="html files/EAGLERCRAFT2.html" class="aero-button">Minecraft 1.5.2</a>
+            <a href="html files/1.8.html" class="aero-button">1.8.8 Minecraft Multiplayer</a>
+            <a href="html files/EAGLERCRAFT.html" class="aero-button">Minecraft Beta</a>
+            <a href="html files/DOOM/DOOM CLONE/DOOM CLONE.html" class="aero-button">Doom Clone</a>
+            <a href="html files/DOOM/CHECK DOOM.html" class="aero-button">Doom on Checkboxes</a>
+            <a href="html files/DOOM/PDF DOOM.pdf" class="aero-button">Doom on a PDF *ND</a>
+            <a href="html files/HUNGER/HUNGER.html" class="aero-button">Hunger Games Simulator</a>
+            <a href="sonic.html" class="aero-button">Sonic</a>
+            <a href="snake2.html" class="aero-button">Snake 2</a>
+            <a href="tetris2.html" class="aero-button">Tetris 2</a>
+            <a href="pacman2.html" class="aero-button">Pac-Man 2</a>
+            <a href="pong2.html" class="aero-button">Pong 2</a>
+            <a href="hangman2.html" class="aero-button">Hangman 2</a>
+            <a href="quiz2.html" class="aero-button">Quiz 2</a>
+            <a href="mahjong2.html" class="aero-button">Mahjong 2</a>
+            <a href="bejeweled2.html" class="aero-button">Bejeweled 2</a>
+            <a href="mortalkombat.html" class="aero-button">Mortal Kom...</a>
+            <a href="pacmanbattle.html" class="aero-button">Pac-Man Ba...</a>
+            <a href="frogger3.html" class="aero-button">Frogger 3</a>
+            <a href="arkanoid3.html" class="aero-button">Arkanoid 3</a>
+            <a href="tetris3.html" class="aero-button">Tetris 3</a>
+            <a href="frogger.html" class="aero-button">Frogger</a>
+            <a href="arkanoid.html" class="aero-button">Arkanoid</a>
+            <a href="bejeweled.html" class="aero-button">Bejeweled</a>
+            <a href="minesweeper.html" class="aero-button">Minesweeper</a>
+            <a href="solitaire.html" class="aero-button">Solitaire</a>
+            <a href="mahjong.html" class="aero-button">Mahjong</a>
+            <a href="hangman.html" class="aero-button">Hangman</a>
+            <a href="quiz.html" class="aero-button">Quiz</a>
+            <a href="racing.html" class="aero-button">Racing</a>
+            <a href="spaceinvaders.html" class="aero-button">Space Inv</a>
+            <a href="donkeykong.html" class="aero-button">Donkey Kong</a>
+            <a href="galaga.html" class="aero-button">Galaga</a>
+            <a href="centipede.html" class="aero-button">Centipede</a>
+            <a href="digdug.html" class="aero-button">Dig Dug</a>
+            <a href="joust.html" class="aero-button">Joust</a>
+            <a href="defender.html" class="aero-button">Defender</a>
+            <a href="qbert.html" class="aero-button">Q*bert</a>
+            <a href="frogger2.html" class="aero-button">Frogger II</a>
+            <a href="burgertime.html" class="aero-button">BurgerTime</a>
+            <a href="marblemadness.html" class="aero-button">Marble Madness</a>
+            <a href="paperboy.html" class="aero-button">Paperboy</a>
+            <a href="spyhunter.html" class="aero-button">Spy Hunter</a>
+            <a href="moonpatrol.html" class="aero-button">Moon Patrol</a>
+            <a href="karateka.html" class="aero-button">Karateka</a>
+            <a href="loderunner.html" class="aero-button">Lode Runner</a>
+            <a href="boulderdash.html" class="aero-button">Boulder Dash</a>
+            <a href="tron.html" class="aero-button">Tron</a>
+            <a href="discsoftron.html" class="aero-button">Discs of Tron</a>
+            <a href="kungfu.html" class="aero-button">Kung Fu</a>
+            <a href="xevious.html" class="aero-button">Xevious</a>
+            <a href="phoenix.html" class="aero-button">Phoenix</a>
+            <a href="scramble.html" class="aero-button">Scramble</a>
+            <a href="frogger3alt.html" class="aero-button">Frogger III</a>
+            <a href="pacmania.html" class="aero-button">Pac-Mania</a>
+            <a href="mspacman.html" class="aero-button">Ms. Pac-Man</a>
+            <a href="jrpacman.html" class="aero-button">Jr. Pac-Man</a>
+            <a href="poleposition.html" class="aero-button">Pole Position</a>
+            <a href="outrun.html" class="aero-button">Out Run</a>
+            <a href="afterburner.html" class="aero-button">After Burner</a>
+            <a href="sonic2.html" class="aero-button">Sonic 2</a>
+            <a href="sonic3.html" class="aero-button">Sonic 3</a>
+            <a href="streetfighter.html" class="aero-button">Street Fighter</a>
+            <a href="mortalkombat2.html" class="aero-button">Mortal Kombat 2</a>
+            <a href="tekken.html" class="aero-button">Tekken</a>
+            <a href="kof.html" class="aero-button">King of Fighters</a>
+            <a href="guiltygear.html" class="aero-button">Guilty Gear</a>
+            <a href="finalfantasy.html" class="aero-button">Final Fantasy</a>
+            <a href="chronotrigger.html" class="aero-button">Chrono Trigger</a>
+            <a href="secretofmana.html" class="aero-button">Secret of Mana</a>
+            <a href="linktothepast.html" class="aero-button">Link to the Past</a>
+            <a href="ocarinaoftime.html" class="aero-button">Ocarina of Time</a>
+        </div>
+    </div>
+
+    <script>
+        // Create ocean fish
+        function createFish() {
+            const container = document.body;
+            const fishEmojis = ['🐟', '🐠', '🐡', '🐬', '🐳', '🦈', '🐙'];
+            
+            for (let i = 0; i < 12; i++) {
+                const fish = document.createElement('div');
+                fish.classList.add('fish');
+                fish.textContent = fishEmojis[Math.floor(Math.random() * fishEmojis.length)];
+                
+                const posY = Math.random() * 80 + 10;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 30 + 20;
+                const size = Math.random() * 20 + 20;
+                
+                fish.style.top = `${posY}%`;
+                fish.style.animation = `swim ${duration}s linear ${delay}s infinite`;
+                fish.style.fontSize = `${size}px`;
+                fish.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                container.appendChild(fish);
+            }
+        }
+
+        // Create glass circles
+        function createGlassCircles() {
+            const container = document.getElementById('glassCircles');
+            for (let i = 0; i < 25; i++) {
+                const circle = document.createElement('div');
+                circle.classList.add('glass-circle');
+                
+                const size = Math.random() * 120 + 30;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 25 + 15;
+                
+                circle.style.width = `${size}px`;
+                circle.style.height = `${size}px`;
+                circle.style.left = `${posX}%`;
+                circle.style.top = `${posY}%`;
+                circle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(circle);
+            }
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const buttonsContainer = document.getElementById('buttonsContainer');
+            const buttons = buttonsContainer.querySelectorAll('.aero-button');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                buttons.forEach(button => {
+                    const buttonText = button.textContent.toLowerCase();
+                    if (buttonText.includes(searchTerm) || searchTerm === '') {
+                        button.style.display = 'flex';
+                    } else {
+                        button.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createFish();
+            createGlassCircles();
+            setupSearch();
+        });
+    </script>
+</body>
+</html>
