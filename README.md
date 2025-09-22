@@ -4,7 +4,9 @@ This is project created and distibuted by VR.
 
 This is just a silly little game website still in development, so this is constantly updating.
 
-2nd Version: *It says SpringWeb just Pretend its IntunareWeb
+Always changing...
+
+2nd Version: *It says SpringWeb just pretend its IntunareWeb
 ![SpringWeb Logo](new.png)
 
 1st Version:
