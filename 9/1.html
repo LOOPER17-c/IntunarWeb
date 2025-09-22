@@ -2,63 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple Minecraft</title>
-    <link rel="shortcut icon" href="intunare.png">
+    <title>IntunarWeb</title>
     <style>
-        body {
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            background: #6794d8e2;
-            width: 100vw;
-            height: 100vh;
             overflow: hidden;
+            font-family: 'Frutiger', 'Segoe UI', 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+            background: linear-gradient(135deg, #aee9f7 0%, #6dd5ed 50%, #2193b0 100%);
         }
-        .frame {
-                border: none;
-                margin: 0;
-                width: 100vw;
-                height: 100vh;
-                max-width: none;
-                background: #fff;
-                box-shadow: none;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            backdrop-filter: blur(0.5px);
         }
-        .top-bar {
-            background: #0074d9;
-            padding: 16px;
-            text-align: left;
-        }
-        .top-bar button {
-            background: #fff;
-            color: #0074d9;
-            border: none;
-            padding: 8px 20px;
-            font-size: 1rem;
-            border-radius: 6px;
+        header {
+            background: rgba(255,255,255,0.18);
+            color: #2193b0;
+            padding: 1.2em 2em;
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            user-select: none;
+            border-radius: 18px;
+            margin: 2em auto 1em auto;
+            box-shadow: 0 8px 32px 0 rgba(34,193,176,0.18);
+            border: 1px solid rgba(255,255,255,0.3);
+            width: fit-content;
+            transition: background 0.3s, color 0.3s;
         }
-        .top-bar button:hover {
-            background: #e6f0ff;
+        header:hover {
+            background: rgba(255,255,255,0.35);
+            color: #176ca1;
         }
         .iframe-container {
+            flex: 1;
             width: 100%;
             height: 100%;
-            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        iframe {
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 24px 0 rgba(34,193,176,0.12);
+            width: 90vw;
+            height: 80vh;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(2px);
             display: block;
-            flex: 1;
+            transition: box-shadow 0.3s;
+        }
+        iframe:hover {
+            box-shadow: 0 8px 32px 0 rgba(34,193,176,0.22);
         }
     </style>
 </head>
 <body>
-    <div class="frame">
-        <div class="top-bar">
-                <button onclick="window.history.back()">Go Back</button>
-        </div>
-        <iframe src="html files/BLOCKS/BLOCKS.html" class="iframe-container"></iframe>
+    <header onclick="window.history.back()">IntunarWeb</header>
+    <div class="iframe-container">
+        <iframe src="html files/BLOCKS/BLOCKS.html" allowfullscreen></iframe>
     </div>
 </body>
 </html>
