@@ -6,7 +6,10 @@ This is just a silly little game website still in development, so this is consta
 
 Always changing...
 
-2nd Version: *It says SpringWeb just pretend its IntunareWeb
+3rd Version: 
+![SpringWeb Logo](ew.png)
+
+2nd Version: 
 ![SpringWeb Logo](new.png)
 
 1st Version:
