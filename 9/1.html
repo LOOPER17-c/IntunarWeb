@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Minecraft</title>
+    <link rel="shortcut icon" href="intunare.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #e6f0ff;
+        }
+        .frame {
+            border: 8px solid #0074d9;
+            border-radius: 12px;
+            margin: 32px auto;
+            max-width: 900px;
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .top-bar {
+            background: #0074d9;
+            padding: 16px;
+            text-align: left;
+        }
+        .top-bar button {
+            background: #fff;
+            color: #0074d9;
+            border: none;
+            padding: 8px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .top-bar button:hover {
+            background: #e6f0ff;
+        }
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="frame">
+        <div class="top-bar">
+            <button onclick="window.location.href='index.html'">IntunarWeb</button>
+        </div>
+        <iframe src="html files/BLOCKS/BLOCKS.html" class="iframe-container"></iframe>
+    </div>
+</body>
+</html>
