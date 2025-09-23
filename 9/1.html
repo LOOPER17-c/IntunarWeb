@@ -64,8 +64,35 @@
 </head>
 <body>
     <header onclick="window.history.back()">IntunarWeb</header>
+        <button id="fullscreen-btn" style="position: absolute; top: 1.5em; right: 2em; z-index: 10; padding: 0.7em 1.5em; font-size: 1.1em; border-radius: 12px; border: none; background: #2193b0; color: #fff; cursor: pointer; box-shadow: 0 2px 8px 0 rgba(34,193,176,0.18); transition: background 0.3s;">Fullscreen</button>
     <div class="iframe-container">
         <iframe src="html files/BLOCKS/BLOCKS.html" allowfullscreen></iframe>
     </div>
+    <script>
+    const btn = document.getElementById('fullscreen-btn');
+    const iframe = document.querySelector('iframe');
+    btn.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+            btn.textContent = 'Fullscreen';
+        } else {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen();
+            }
+            btn.textContent = 'Exit Fullscreen';
+        }
+    });
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+            btn.textContent = 'Fullscreen';
+        } else {
+            btn.textContent = 'Exit Fullscreen';
+        }
+    });
+    </script>
 </body>
 </html>
