@@ -7,7 +7,7 @@ This is just a silly little game website still in development, so this is consta
 Always changing...
 
 3rd Version: 
-![SpringWeb Logo](ew.png)
+![SpringWeb Logo](New.png)
 
 2nd Version: 
 ![SpringWeb Logo](new.png)
