@@ -7,12 +7,12 @@ This is just a silly little game website still in development, so this is consta
 Always changing...
 
 3rd Version: 
-![SpringWeb Logo](New.png)
+![Current](New.png)
 
 2nd Version: 
-![SpringWeb Logo](new.png)
+![Previous](new.png)
 
 1st Version:
-![SpringWeb Logo](old.png)
+![Previously Previous](old.png)
 
 Thanks for playing!
