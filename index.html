@@ -41,7 +41,7 @@
         }
 
         @keyframes swim {
-            0% { transform: translateX(-100px) rotate(8deg); }
+            0% { transform: translateX(-100px) rotate(25deg); }
             100% { transform: translateX(calc(100vw + 100px)) rotate(9deg); }
         }
 
@@ -360,6 +360,7 @@
             <a href="9/html files/STACKER.html" class="aero-button">Stacker</a>
             <a href="9/html files/TETRIS.html" class="aero-button">Simple Tetris</a>
             <a href="9/html files/TRAIL.html" class="aero-button">Oregon Trail</a>
+            <a href="9/html files/fried.png" class="aero-button">Fried Chicken</a>
         </div>
     </div>
 
@@ -367,7 +368,7 @@
         // Create ocean fish
         function createFish() {
             const container = document.body;
-            const fishEmojis = ['🐟', '🐡', '🐬', '🐳', '🦈', '🐙' ,'🦞' ,'😜'];
+            const fishEmojis = ['🐟', '🐡', '🐬', '🐳', '🦈', '🐙' ,'🦞'];
             
             for (let i = 0; i < 12; i++) {
                 const fish = document.createElement('div');
@@ -431,7 +432,6 @@
             });
         }
 
-        // Initialize
         window.addEventListener('load', () => {
             createFish();
             createGlassCircles();

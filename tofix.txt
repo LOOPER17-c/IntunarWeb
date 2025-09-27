@@ -1,4 +1,3 @@
-get rid of tongue stickin oout
 simple minecraft not work
 1.8.8 ND
 Minecrat Beta icon not work
@@ -19,6 +18,5 @@ pokegues has back button
 ball hop has back button
 stacker has back button
 oregon trail has back button
-after fix all,
-now you can add from ADD.txt
+after fix all, now you can add from ADD.txt
 
