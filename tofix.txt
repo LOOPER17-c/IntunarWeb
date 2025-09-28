@@ -1,5 +1,3 @@
-1.8.8 ND
-Minecrat Beta icon not work
 PDF Doom ND
 3d pacman has back button
 classroom 6x no work
