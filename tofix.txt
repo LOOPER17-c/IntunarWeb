@@ -1,19 +1,14 @@
+1.8.8 ico
+beta ico
 PDF Doom ND
-3d pacman has back button
 classroom 6x no work
 mario kart 64 ND
 jetpack joyride ND
-car circle has back button
-crossy road has back button
 fix coolmath same way as 6x
 fix qag 99
 lumon industries ico no work
 fix monkey Monkey mart
 fix neal.fun same way as 6x also ico
 fix oregon trail website same way as 6x
-pokegues has back button
-ball hop has back button
-stacker has back button
-oregon trail has back button
 after fix all, now you can add from ADD.txt
 
