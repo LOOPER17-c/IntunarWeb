@@ -5,9 +5,19 @@
 	<title>Home | Schoology</title>
      <link rel="shortcut icon" href="Z.png">
 	<script>
-		window.onload = function() {
-			window.open('https://classroom-6x.io/home', '_blank');
-		};
+	window.onload = function() {
+		var win = window.open('', '_blank');
+		if (win) {
+			win.document.write(`
+				<title>Home | Schoology</title>
+				<link rel=\"shortcut icon\" href=\"Z.png\">
+				<script>
+					window.location.href = 'https://classroom-6x.io/home';
+				<\/script>
+			`);
+			win.document.close();
+		}
+	};
 	</script>
 </head>
 <body>
