@@ -1,27 +1,25 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html>  
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
 	<title>Home | Schoology</title>
-	<link rel="icon" type="image/png" href="image.png"/>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			height: 100%;
-			overflow: hidden;
+     <link rel="shortcut icon" href="Z.png">
+	<script>
+	window.onload = function() {
+		var win = window.open('', '_blank');
+		if (win) {
+			win.document.write(`
+				<title>Home | Schoology</title>
+				<link rel=\"shortcut icon\" href=\"Z.png\">
+				<script>
+					window.location.href = 'https://neal.fun/';
+				<\/script>
+			`);
+			win.document.close();
 		}
-		
-		iframe {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border: none;
-		}
-	</style>
+	};
+	</script>
 </head>
 <body>
-	<iframe src="https://neal.fun/" frameborder="0"></iframe>
 </body>
 </html>
