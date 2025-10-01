@@ -1,4 +1,4 @@
-templates good
+templates gooder
 
 <!DOCTYPE html>
 <html>
