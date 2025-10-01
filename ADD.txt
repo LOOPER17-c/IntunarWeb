@@ -26,14 +26,16 @@ toolfk.com
 ncase.me
 29a.ch
 therandombutton.github.io
-github.com/TylerPalko/gamehub    just add games i don’t have already
 www.w3schools.com
 slope2game.io
 n-gon-enhanced.vercel.app
 github.com/BenjaminAster/CSS-Minecraft
 sz-games.github.io
-github.com/sz-games/sz-games.github.io     just add games i don’t have already
 www.onlineconverter.com
 css-games.com
 github.com/Afif13/CSS-Games     just add games i don’t have already
 github.com/Frooshiii/Games      just add games i don’t have already
+github.com/TylerPalko/gamehub    just add games i don’t have already
+github.com/sz-games/sz-games.github.io     just add games i don’t have already
+
+
